@@ -32,8 +32,6 @@ public class interfaz_principal extends Activity {
             }
         });
 
-
-
         btnimgVerProd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,12 +39,6 @@ public class interfaz_principal extends Activity {
             }
         });
 
-        imgUsuarioNuevo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imgUsuarioNuevo();
-            }
-        });
     }
 
     private void btnimgProdN(){
@@ -62,10 +54,4 @@ public class interfaz_principal extends Activity {
     }
 
 
-
-    private void imgUsuarioNuevo(){
-        Intent intent = new Intent(this, lista_usuarios.class);
-        startActivity(intent);
-        finish(); // Cierra la actividad actual
-    }
 }

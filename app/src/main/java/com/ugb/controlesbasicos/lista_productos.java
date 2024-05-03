@@ -1,6 +1,6 @@
 package com.ugb.controlesbasicos;
 
-import android.annotation.SuppressLint;
+
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -23,6 +23,13 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,7 +49,8 @@ public class lista_productos extends AppCompatActivity {
     obtenerDatosServidor datosServidor;
     detectarInternet di;
     int posicion = 0;
-    @SuppressLint("MissingInflatedId")
+    DatabaseReference databaseReference;
+    String miToken="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +64,11 @@ public class lista_productos extends AppCompatActivity {
                 abrirActividad(paramatros);
             }
         });
+
         di = new detectarInternet(getApplicationContext());
         if( di.hayConexionInternet() ){//online
             obtenerDatosProductosServidor();
-            sincronizar();
+            //sincronizar();
         }else{//offline
             mostrarMsg("No hay conexion, datos en local");
             obtenerProductos();
@@ -74,6 +83,10 @@ public class lista_productos extends AppCompatActivity {
                 jsonObject = new JSONObject();
 
                 do{
+                    if( cProductos.getString(0).length()>0 && cProductos.getString(1).length()>0 ){
+                        jsonObject.put("_id", cProductos.getString(0));
+                        jsonObject.put("_rev", cProductos.getString(1));
+                    }
 
                     jsonObject.put("idProducto", cProductos.getString(0));
                     jsonObject.put("marca", cProductos.getString(1));
@@ -114,16 +127,70 @@ public class lista_productos extends AppCompatActivity {
             mostrarMsg("Error al sincronizar "+ e.getMessage());
         }
     }
-    private void obtenerDatosProductosServidor(){
-        try{
-            datosServidor = new obtenerDatosServidor();
-            String data = datosServidor.execute().get();
 
-            jsonObject =new JSONObject(data);
-            datosJSON = jsonObject.getJSONArray("rows");
-            mostrarDatosProductos();
+    private void obtenerDatosProductosServidor(){
+        //aqui te quedaste
+        try{
+            databaseReference = FirebaseDatabase.getInstance().getReference("productos");
+            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(tarea->{
+                if(!tarea.isSuccessful()) return;
+                miToken = tarea.getResult();
+                if( miToken!=null && miToken.length()>1 ){
+                    databaseReference.orderByChild("token").equalTo(miToken).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            try{
+                                if( snapshot.getChildrenCount()<=0 ){
+                                    mostrarMsg("No estas registrado.");
+                                    paramatros.putString("accion", "nuevo");
+                                    abrirActividad(paramatros);
+                                }
+                            }catch (Exception e){
+                                mostrarMsg("Error al buscar nuestro registro: "+ e.getMessage());
+                                paramatros.putString("accion", "nuevo");
+                                abrirActividad(paramatros);
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            });
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    try {
+                        datosJSON = new JSONArray();
+                        for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                            productos producto = dataSnapshot.getValue(productos.class);
+                            jsonObject = new JSONObject();
+                            jsonObject.put("idProducto", producto.getIdProducto());
+                            jsonObject.put("marca", producto.getMarca());
+                            jsonObject.put("descripcion", producto.getDescripcion());
+                            jsonObject.put("presentacion", producto.getPresentacion());
+                            jsonObject.put("stock", producto.getStock());
+                            jsonObject.put("precio", producto.getPrecio());
+                            jsonObject.put("costo", producto.getCosto());
+                            jsonObject.put("urlCompletaFoto", producto.getUrlFotoProducto());
+                            jsonObject.put("urlFotoAmigoFirestore", producto.getUrlFotoProductoFirestore());
+                            jsonObject.put("to", producto.getToken());
+                            jsonObject.put("from", miToken);
+                            datosJSON.put(jsonObject);
+                        }
+                        mostrarDatosProductos();
+                    }catch (Exception e){
+                        mostrarMsg("Error al obtener los amigos: "+ e.getMessage());
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }catch (Exception e){
-            mostrarMsg("Error al obtener datos productos del server: "+ e.getMessage());
+            mostrarMsg("Error al obtener datos amigos del server: "+ e.getMessage());
         }
     }
     private void mostrarDatosProductos(){
@@ -248,10 +315,14 @@ public class lista_productos extends AppCompatActivity {
                             String descripcion = producto.getDescripcion();
                             String presentacion= producto.getPresentacion();
                             String stock = producto.getStock();
+                            String precio = producto.getPrecio();
+                            String costo = producto.getCosto();
                             if( marca.trim().toLowerCase().contains(valor) ||
                                     descripcion.trim().toLowerCase().contains(valor) ||
                                     presentacion.trim().contains(valor) ||
-                                    stock.trim().toLowerCase().contains(valor)){
+                                    stock.trim().toLowerCase().contains(valor)||
+                                    precio.trim().toLowerCase().contains(valor)||
+                                    costo.trim().toLowerCase().contains(valor)){
                                 alProductos.add(producto);
                             }
                         }
@@ -269,7 +340,7 @@ public class lista_productos extends AppCompatActivity {
         });
     }
     private void abrirActividad(Bundle parametros){
-        Intent abrirActividad = new Intent(getApplicationContext(), MainActivity.class);
+        Intent abrirActividad = new Intent(getApplicationContext(), interfaz_principal.class);
         abrirActividad.putExtras(parametros);
         startActivity(abrirActividad);
     }
@@ -290,7 +361,8 @@ public class lista_productos extends AppCompatActivity {
                     jsonObject.put("presentacion", cProductos.getString(5));
                     jsonObject.put("stock", cProductos.getString(6));
                     jsonObject.put("precio", cProductos.getString(7));
-                    jsonObject.put("urlCompletaFoto", cProductos.getString(8));
+                    jsonObject.put("costo", cProductos.getString(8));
+                    jsonObject.put("urlCompletaFoto", cProductos.getString(9));
                     jsonObjectValue.put("value", jsonObject);
 
                     datosJSON.put(jsonObjectValue);

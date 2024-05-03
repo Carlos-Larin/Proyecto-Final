@@ -38,7 +38,7 @@ public class adaptadorImagenes extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("ViewHolder") View itemView = layoutInflater.inflate(R.layout.listview_imagenes, viewGroup, false);
+         View itemView = layoutInflater.inflate(R.layout.listview_imagenes, viewGroup, false);
         try{
             datosProductos = datosProductosArrayList.get(i);
 

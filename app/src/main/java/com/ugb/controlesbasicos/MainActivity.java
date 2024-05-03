@@ -1,4 +1,5 @@
 package com.ugb.controlesbasicos;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -10,12 +11,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
@@ -35,7 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-
+//revisar los tokens lineas a revisar 113,144
 public class MainActivity extends AppCompatActivity {
     Button btn;
     FloatingActionButton fab;
@@ -109,12 +112,25 @@ public class MainActivity extends AppCompatActivity {
             });
         });
     }
-    private void obtenerToken(){
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-            if( !task.isSuccessful() ){
-                return;
+    //revisar los tokens
+    private void obtenerToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Log.w("Firebase", "Fetching FCM registration token failed", task.getException());
+                    return;
+                }
+
+                // Get new FCM registration token
+                String token = task.getResult();
+                if (token != null) {
+                    Log.d("Firebase", "Token: " + token);
+                    miToken = token;
+                } else {
+                    Log.w("Firebase", "Token is null");
+                }
             }
-            miToken = task.getResult();
         });
     }
     private void guardarAmigo(){
@@ -165,14 +181,10 @@ public class MainActivity extends AppCompatActivity {
         File fotoProducto = null;
         try{
             fotoProducto= crearImagenAmigo();
-            if( fotoProducto!=null ){
-                Uri uriFotoamigo = FileProvider.getUriForFile(MainActivity.this,
-                        "com.ugb.controlesbasicos.fileprovider", fotoProducto);
-                tomarFotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriFotoamigo);
-                startActivityForResult(tomarFotoIntent, 1);
-            }else{
-                mostrarMsg("No se pudo creaar la foto");
-            }
+            Uri uriFotoamigo = FileProvider.getUriForFile(MainActivity.this,
+                    "com.ugb.controlesbasicos.fileprovider", fotoProducto);
+            tomarFotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriFotoamigo);
+            startActivityForResult(tomarFotoIntent, 1);
         }catch (Exception e){
             mostrarMsg("Error al abrir la camara: "+ e.getMessage());
         }

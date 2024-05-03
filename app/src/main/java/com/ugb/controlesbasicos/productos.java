@@ -26,16 +26,6 @@ public class productos {
         this.token=token;
 
     }
-
-    public String getCosto() {
-        return costo;
-    }
-
-    public void setCosto(String costo) {
-        this.costo = costo;
-    }
-
-
     public String getUrlFotoProductoFirestore() {
         return urlFotoProductoFirestore;
     }
@@ -58,6 +48,14 @@ public class productos {
 
     public void setUrlFotoProducto(String urlFotoProducto) {
         this.urlFotoProducto = urlFotoProducto;
+    }
+
+    public String getCosto() {
+        return costo;
+    }
+
+    public void setCosto(String costo) {
+        this.costo = costo;
     }
 
     public String getIdProducto() {
