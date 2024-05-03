@@ -1,8 +1,7 @@
 package com.ugb.controlesbasicos;
 
 public class productos {
-    String _id;
-    String _rev;
+
     String idProducto;
     String marca;
     String descripcion;
@@ -10,10 +9,10 @@ public class productos {
     String stock;
     String precio;
     String urlFotoProducto;
+    String urlFotoProductoFirestore;
+    String Token;
 
-    public productos(String _id, String _rev, String idProducto, String marca, String descripcion, String presentacion, String stock, String  precio, String urlFoto) {
-        this._id = _id;
-        this._rev = _rev;
+    public productos(String idProducto, String marca, String descripcion, String presentacion, String stock, String  precio, String urlFoto, String urlFotoProductoFirestore, String Token) {
         this.idProducto = idProducto;
         this.marca = marca;
         this.descripcion = descripcion;
@@ -21,18 +20,24 @@ public class productos {
         this.stock = stock;
         this.precio = precio;
         this.urlFotoProducto = urlFoto;
+        this.urlFotoProductoFirestore=urlFotoProductoFirestore;
+        this.Token=Token;
+
     }
-    public String get_id() {
-        return _id;
+
+    public String getUrlFotoProductoFirestore() {
+        return urlFotoProductoFirestore;
     }
-    public void set_id(String _id) {
-        this._id = _id;
+
+    public void setUrlFotoProductoFirestore(String urlFotoProductoFirestore){
+        this.urlFotoProductoFirestore=urlFotoProductoFirestore;
     }
-    public String get_rev() {
-        return _rev;
+
+    public String getToken() {
+        return Token;
     }
-    public void set_rev(String _rev) {
-        this._rev = _rev;
+    public void setToken(String token) {
+        this.Token = token;
     }
     public String getUrlFotoProducto() {
         return urlFotoProducto;
