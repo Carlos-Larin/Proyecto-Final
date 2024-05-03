@@ -82,7 +82,7 @@ public class lista_productos extends AppCompatActivity {
         lts.setOnItemClickListener((parent, view, position, id) -> {
             try{
                 Bundle bundle = new Bundle();
-                bundle.putString("nombre", datosJSON.getJSONObject(position).getString("nombre") );
+                bundle.putString("marca", datosJSON.getJSONObject(position).getString("marca") );
                 bundle.putString("to", datosJSON.getJSONObject(position).getString("to") );
                 bundle.putString("from", datosJSON.getJSONObject(position).getString("from") );
                 bundle.putString("urlCompletaFoto", datosJSON.getJSONObject(position).getString("urlCompletaFoto") );
@@ -202,7 +202,9 @@ public class lista_productos extends AppCompatActivity {
                                 jsonObject.put("costo", producto.getCosto());
                                 jsonObject.put("urlCompletaFoto", producto.getUrlFotoProducto());
                                 jsonObject.put("urlFotoProductoFirestore", producto.getUrlFotoProductoFirestore());
-                                jsonObject.put("token", producto.getToken());
+                                jsonObject.put("to", producto.getToken());
+                                jsonObject.put("from", miToken );
+                                datosJSON.put(jsonObject);
 
                                 datosJSON.put(jsonObject);
                                 alProductos.add(producto);
@@ -243,8 +245,8 @@ public class lista_productos extends AppCompatActivity {
                             misDatosJSONObject.getString("precio"),
                             misDatosJSONObject.getString("costo"),
                             misDatosJSONObject.getString("urlCompletaFoto"),
-                            misDatosJSONObject.optString("urlFotoProductoFirestore", ""),
-                            misDatosJSONObject.optString("token", "")
+                            misDatosJSONObject.optString("urlFotoProductoFirestore"),
+                            misDatosJSONObject.optString("to")
                     );
                     alProductos.add(datosProductos);
                 }
@@ -270,7 +272,7 @@ public class lista_productos extends AppCompatActivity {
         try {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
             posicion = info.position;
-            menu.setHeaderTitle("Que deseas hacer con " + datosJSON.getJSONObject(posicion).getString("marca"));
+            menu.setHeaderTitle("Que deseas hacer con " + datosJSON.getJSONObject(posicion).getJSONObject("value").getString("marca"));
         } catch (Exception e) {
             mostrarMsg("Error al mostrar el menu aqui: " + e.getMessage());
         }
@@ -301,10 +303,10 @@ public class lista_productos extends AppCompatActivity {
         try {
             AlertDialog.Builder confirmar = new AlertDialog.Builder(lista_productos.this);
             confirmar.setTitle("Esta seguro de eliminar a: ");
-            confirmar.setMessage(datosJSON.getJSONObject(posicion).getString("marca"));
+            confirmar.setMessage(datosJSON.getJSONObject(posicion).getJSONObject("value").getString("marca"));
             confirmar.setPositiveButton("SI", (dialogInterface, i) -> {
                 try {
-                    String respuesta = db.administrar_productos("eliminar", new String[]{"", "", datosJSON.getJSONObject(posicion).getString("idProducto")});
+                    String respuesta = db.administrar_productos("eliminar", new String[]{"", "", datosJSON.getJSONObject(posicion).getJSONObject("value").getString("idProducto")});
                     if (respuesta.equals("ok")) {
                         mostrarMsg("Producto eliminado con exito");
                         obtenerProductos();
@@ -383,6 +385,8 @@ public class lista_productos extends AppCompatActivity {
                 datosJSON = new JSONArray();
                 do {
                     jsonObject = new JSONObject();
+                    JSONObject jsonObjectValue = new JSONObject();
+
                     jsonObject.put("idProducto", cProductos.getString(cProductos.getColumnIndex("idProducto")));
                     jsonObject.put("marca", cProductos.getString(cProductos.getColumnIndex("marca")));
                     jsonObject.put("descripcion", cProductos.getString(cProductos.getColumnIndex("descripcion")));
@@ -392,7 +396,9 @@ public class lista_productos extends AppCompatActivity {
                     jsonObject.put("costo", cProductos.getString(cProductos.getColumnIndex("costo")));
                     jsonObject.put("urlCompletaFoto", cProductos.getString(cProductos.getColumnIndex("foto")));
                     jsonObject.put("actualizado", cProductos.getString(cProductos.getColumnIndex("actualizado")));
+                    jsonObjectValue.put("value", jsonObject);
 
+                    datosJSON.put(jsonObjectValue);
                     datosJSON.put(jsonObject);
                 } while (cProductos.moveToNext());
                 mostrarDatosProductos();

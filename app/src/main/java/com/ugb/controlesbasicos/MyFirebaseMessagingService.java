@@ -1,4 +1,5 @@
 package com.ugb.controlesbasicos;
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,6 +18,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+@SuppressLint("MissingFirebaseInstanceTokenRefresh")
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyAndroidFCMservice";
     private static final String ADMIN_CHANNEL_ID = "";
@@ -58,7 +60,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setupChannels() {
         CharSequence adminChannelName = "miCanal";
-        String adminChannelDescription = "Esta es mi cana de comunicacion";
+        String adminChannelDescription = "Esta es mi canal de comunicacion";
         NotificationChannel adminChannel;
         adminChannel = new NotificationChannel(ADMIN_CHANNEL_ID, adminChannelName, NotificationManager.IMPORTANCE_LOW);
         adminChannel.setDescription(adminChannelDescription);

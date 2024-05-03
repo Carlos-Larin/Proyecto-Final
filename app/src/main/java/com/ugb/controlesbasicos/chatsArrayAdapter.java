@@ -33,6 +33,7 @@ public class chatsArrayAdapter extends ArrayAdapter {
     public chatMessage getItem(int index){
         return chatMessageList.get(index);
     }
+    @NonNull
     public View getView(int posicion, View view, ViewGroup viewGroup){
         View fila = view;
         try {

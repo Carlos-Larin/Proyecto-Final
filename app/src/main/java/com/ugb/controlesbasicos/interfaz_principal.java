@@ -60,7 +60,7 @@ public class interfaz_principal extends Activity {
     }
 
     private void btnimgUsuariochat(){
-        Intent intent = new Intent(this, chat.class);
+        Intent intent = new Intent(this, chats.class);
         startActivity(intent);
         finish(); // Cierra la actividad actual
     }

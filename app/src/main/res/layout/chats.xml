@@ -8,10 +8,16 @@
 
     <ImageView
         android:id="@+id/imgAtras"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/atras"/>
+        android:layout_width="34dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/atras" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/crvPhotoToChat"
         android:layout_marginLeft="50dp"
@@ -29,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="120dp"
-        android:text="Amigo a chatear"/>
+        android:text="Joyas"/>
     <ListView
         android:id="@+id/ltsChats"
         android:layout_width="match_parent"

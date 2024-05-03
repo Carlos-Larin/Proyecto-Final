@@ -35,11 +35,12 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Objects;
 
 public class chats extends AppCompatActivity {
     ImageView imgTemp;
     TextView tempVal;
-    String to="", from="", user="", msg = "", urlPhoto = "", urlPhotoFirestore = "";
+    String to="", from="", user="", msg = "", urlFoto = "", urlFotoProductoFirestore = "";
     DatabaseReference databaseReference;
     private chatsArrayAdapter chatArrayAdapter;
     TextView txtMsg;
@@ -71,12 +72,13 @@ public class chats extends AppCompatActivity {
                 startActivity(intent);
             });
             Bundle parametros = getIntent().getExtras();
-            if (parametros.getString("to") != null && parametros.getString("to") != "") {
+            assert parametros != null;
+            if (parametros.getString("to") != null && !Objects.equals(parametros.getString("to"), "")) {
                 to = parametros.getString("to");
                 from = parametros.getString("from");
-                user = parametros.getString("nombre");
-                urlPhoto = parametros.getString("urlCompletaFoto");
-                urlPhotoFirestore = parametros.getString("urlFotoAmigoFirestore");
+                user = parametros.getString("marca");
+                urlFoto = parametros.getString("urlCompletaFoto");
+                urlFotoProductoFirestore = parametros.getString("urlFotoProductoFirestore");
                 tempVal.setText(user);
             }
             txtMsg = findViewById(R.id.txtMsg);
@@ -167,7 +169,7 @@ public class chats extends AppCompatActivity {
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setRequestProperty("Content-Type", "application/json");
                 urlConnection.setRequestProperty("Accept", "application/json");
-                urlConnection.setRequestProperty("Authorization", "key=AAAAw8k5WGY:APA91bFusYbYLzNPq2ZS63Y8elBq-6EhnmoqcdmEzlbaFFORzM7IVWC3PRpFCNTdeOQ0o5nFjQgTeTdPaisrdtRgi_A4RKyn761Qz7veiF466hYm8-ofSm2iA89-KALXS9rJcjsLReBp");
+                urlConnection.setRequestProperty("Authorization", "key=BDNHwzIS-Ua_ZnCwNG6OQqtd1AOfdRh9C7vP4MPrb54cK_yRfyfMtSS82024");
 
                 //set headers and method
                 Writer writer = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
@@ -183,9 +185,9 @@ public class chats extends AppCompatActivity {
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
                 String inputLine;
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 while ((inputLine = reader.readLine()) != null) {
-                    buffer.append(inputLine + "\n");
+                    buffer.append(inputLine).append("\n");
                 }
                 if (buffer.length() == 0) {
                     return null;
@@ -221,9 +223,9 @@ public class chats extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if( snapshot.getChildrenCount()>0 ){
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        if( (dataSnapshot.child("de").getValue().equals(from) && dataSnapshot.child("para").getValue().equals(to))
-                                || (dataSnapshot.child("de").getValue().equals(to) && dataSnapshot.child("para").getValue().equals(from))) {
-                            sendChatMessage(dataSnapshot.child("para").getValue().equals(from), dataSnapshot.child("msg").getValue().toString());
+                        if( (Objects.equals(dataSnapshot.child("de").getValue(), from) && Objects.equals(dataSnapshot.child("para").getValue(), to))
+                                || (Objects.equals(dataSnapshot.child("de").getValue(), to) && Objects.equals(dataSnapshot.child("para").getValue(), from))) {
+                            sendChatMessage(Objects.equals(dataSnapshot.child("para").getValue(), from), Objects.requireNonNull(dataSnapshot.child("msg").getValue()).toString());
                         }
                     }
                 }
@@ -249,7 +251,7 @@ public class chats extends AppCompatActivity {
     };
     void mostrarFoto(){
         imgTemp = findViewById(R.id.imgPhotoChat);
-        Glide.with(getApplicationContext()).load(urlPhotoFirestore).into(imgTemp);
+        Glide.with(getApplicationContext()).load(urlFotoProductoFirestore).into(imgTemp);
     }
     private void mostrarMsgToast(String msg){
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();

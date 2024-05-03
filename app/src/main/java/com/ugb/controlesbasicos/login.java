@@ -32,11 +32,11 @@ public class login extends Activity {
     }
 
     private void login() {
-        String username = editUsuario.getText().toString().trim();
+        String user = editUsuario.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
         // Check if the username is "joyas" and the password is "12345"
-        if ("joyas".equals(username) && "12345".equals(password)) {
+        if ("joyas".equals(user) && "12345".equals(password)) {
             // Correct credentials, start the MainActivity
             Intent intent = new Intent(this, interfaz_principal.class);
             startActivity(intent);
