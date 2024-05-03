@@ -14,8 +14,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -135,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
             databaseReference = FirebaseDatabase.getInstance().getReference("productos");
             String key = databaseReference.push().getKey();
 
-            if(miToken.equals("") || miToken==null){
+            if(miToken.isEmpty()){
                 obtenerToken();
             }
             if( miToken!=null && miToken!="" ){

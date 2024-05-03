@@ -13,9 +13,8 @@ public class detectarInternet {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if( connectivityManager==null ) return false;
         NetworkInfo[] networkInfos = connectivityManager.getAllNetworkInfo();
-        if( networkInfos==null ) return false;
-        for (int i=0; i<networkInfos.length; i++){
-            if( networkInfos[i].getState()==NetworkInfo.State.CONNECTED ) return true;
+        for (NetworkInfo networkInfo : networkInfos) {
+            if (networkInfo.getState() == NetworkInfo.State.CONNECTED) return true;
         }
         return false;
     }
