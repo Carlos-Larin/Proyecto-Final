@@ -40,7 +40,7 @@ public class interfaz_principal extends Activity {
         });
         btnimgUsuariochat.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {btnimgUsuariochat();
 
             }
         });
@@ -60,7 +60,7 @@ public class interfaz_principal extends Activity {
     }
 
     private void btnimgUsuariochat(){
-        Intent intent = new Intent(this, lista_productos.class);
+        Intent intent = new Intent(this, chat.class);
         startActivity(intent);
         finish(); // Cierra la actividad actual
     }

@@ -1,12 +1,13 @@
 package com.ugb.controlesbasicos;
-
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +51,7 @@ public class adaptadorImagenes extends BaseAdapter {
             viewHolder.lblPresentacion = convertView.findViewById(R.id.lblPresentacion);
             viewHolder.lblPrecioProducto = convertView.findViewById(R.id.lblPrecioProducto);
             viewHolder.imgFoto = convertView.findViewById(R.id.imgFoto);
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -65,6 +67,8 @@ public class adaptadorImagenes extends BaseAdapter {
                 Bitmap imageBitmap = BitmapFactory.decodeFile(datosProductos.getUrlFotoProducto());
                 viewHolder.imgFoto.setImageBitmap(imageBitmap);
             }
+
+
         } catch (Exception e) {
             Toast.makeText(context, "Error al mostrar los datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -77,5 +81,6 @@ public class adaptadorImagenes extends BaseAdapter {
         TextView lblPresentacion;
         TextView lblPrecioProducto;
         ImageView imgFoto;
+
     }
 }

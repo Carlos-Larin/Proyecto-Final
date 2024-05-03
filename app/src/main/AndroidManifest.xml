@@ -23,6 +23,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.READ_CALL_LOG"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="ccom.google.android.c2dm.permission.RECEIVE" />
 
     <application
         android:allowBackup="true"
@@ -41,7 +42,7 @@
             android:exported="false"/>
         <activity android:name=".lista_productos"
             android:exported="false"/>
-        <activity android:name=".chat"
+        <activity android:name=".chats"
             android:exported="false">
         </activity>
         <activity android:name=".mensajeria"
@@ -63,15 +64,17 @@
             android:resource="@color/design_default_color_primary" />
 
         <service
-            android:exported="true"
             android:name=".MyFirebaseMessagingService"
+            android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-        <service android:exported="false" android:name=".MyFirebaseInstanceIDService"
+
+        <service  android:name=".MyFirebaseInstanceIDService"
+            android:exported="true"
             android:permission="TODO">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />

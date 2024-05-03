@@ -59,6 +59,7 @@ public class lista_productos extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lista_productos);
+        lts = findViewById(R.id.ltsProductos);
         db = new DB(getApplicationContext(), "", null, 1);
         btn = findViewById(R.id.fabAgregarProductos);
         btn.setOnClickListener(view -> {
@@ -75,7 +76,27 @@ public class lista_productos extends AppCompatActivity {
             obtenerProductos();
         }
         buscarProductos();
+        mostrarChats();
     }
+    private void mostrarChats(){
+        lts.setOnItemClickListener((parent, view, position, id) -> {
+            try{
+                Bundle bundle = new Bundle();
+                bundle.putString("nombre", datosJSON.getJSONObject(position).getString("nombre") );
+                bundle.putString("to", datosJSON.getJSONObject(position).getString("to") );
+                bundle.putString("from", datosJSON.getJSONObject(position).getString("from") );
+                bundle.putString("urlCompletaFoto", datosJSON.getJSONObject(position).getString("urlCompletaFoto") );
+                bundle.putString("urlFotoProductoFirestore", datosJSON.getJSONObject(position).getString("urlFotoProductoFirestore") );
+
+                Intent intent = new Intent(getApplicationContext(), chats.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }catch (Exception ex){
+                mostrarMsg(ex.getMessage());
+            }
+        });
+    }
+
 
     private void sincronizar() {
         try {
@@ -388,5 +409,6 @@ public class lista_productos extends AppCompatActivity {
     private void mostrarMsg(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
+
 }
 
