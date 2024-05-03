@@ -38,7 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-//revisar los tokens lineas a revisar 113,144
+
 public class MainActivity extends AppCompatActivity {
     Button btn;
     FloatingActionButton fab;
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         obtenerToken();
-        mostrarDatosAmigos();
+        mostrarDatosProductos();
     }
     private void subirFotoFirestore(){
         mostrarMsg("Subiendo Foto...");
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         urlCompletaFoto = imagen.getAbsolutePath();
         return imagen;
     }
-    private void mostrarDatosAmigos(){
+    private void mostrarDatosProductos(){
         try{
             Bundle parametros = getIntent().getExtras();//Recibir los parametros...
             accion = parametros.getString("accion");

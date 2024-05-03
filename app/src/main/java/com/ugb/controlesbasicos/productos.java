@@ -13,6 +13,7 @@ public class productos {
     String urlFotoProductoFirestore;
     String token;
 
+    public productos(){}
     public productos(String idProducto, String marca, String descripcion, String presentacion, String stock, String  precio, String costo, String urlFoto, String urlFotoProductoFirestore, String token) {
         this.idProducto = idProducto;
         this.marca = marca;
