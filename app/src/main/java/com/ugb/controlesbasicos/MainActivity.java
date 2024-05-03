@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             });
         });
     }
+    //revisa esta clase
     private void obtenerToken(){
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if( !task.isSuccessful() ){
