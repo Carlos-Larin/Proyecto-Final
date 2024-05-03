@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class interfaz_principal extends Activity {
 
-    ImageButton btnimgProdN, btnimgUsuario, btnimgVerProd, imgUsuarioNuevo;
+    Button btnimgProdN, btnimgUsuario, btnimgVerProd,imgUsuarioNuevo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

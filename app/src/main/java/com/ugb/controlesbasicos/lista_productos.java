@@ -7,6 +7,8 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.text.Editable;
@@ -37,6 +39,9 @@ public class lista_productos extends AppCompatActivity {
     Bundle paramatros = new Bundle();
     DB db;
     ListView lts;
+    //RecyclerView lts;
+    //ViewPager lts;
+
     Cursor cProductos;
     final ArrayList<productos> alProductos = new ArrayList<>();
     final ArrayList<productos> alProductosCopy = new ArrayList<>();
