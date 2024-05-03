@@ -38,6 +38,12 @@ public class interfaz_principal extends Activity {
                 btnverproducto();
             }
         });
+        btnimgUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 

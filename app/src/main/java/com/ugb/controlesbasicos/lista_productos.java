@@ -59,7 +59,7 @@ public class lista_productos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lista_productos);
         db = new DB(getApplicationContext(),"", null, 1);
-        btn = findViewById(R.id.fabinterfaz);
+        btn = findViewById(R.id.fabAgregarProductos);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -348,7 +348,7 @@ private void mostrarDatosProductos() {
         });
     }
     private void abrirActividad(Bundle parametros){
-        Intent abrirActividad = new Intent(getApplicationContext(), interfaz_principal.class);
+        Intent abrirActividad = new Intent(getApplicationContext(), MainActivity.class);
         abrirActividad.putExtras(parametros);
         startActivity(abrirActividad);
     }

@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".interfaz_principal"
-    android:background="@drawable/blackfondo">
+    android:background="@drawable/inicio">
 
 
     <TextView
@@ -59,7 +59,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tstUsuario"
+        android:id="@+id/tstmensajes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -67,8 +67,8 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="466dp"
         android:layout_marginEnd="54dp"
-        android:layout_toEndOf="@+id/btnimgUsuario"
-        android:text="Iniciar Seccion"
+        android:layout_toEndOf="@+id/btnimgUsuariochat"
+        android:text="Chat con nosotros"
         android:textAlignment="textStart"
         android:textColor="#FFFFFF"
         android:textStyle="bold" />
@@ -83,7 +83,7 @@
         android:layout_marginTop="607dp"
         android:layout_marginEnd="54dp"
         android:layout_toEndOf="@+id/imgUsuarioNuevo"
-        android:text="Registrarse"
+        android:text="iniciar Seccion"
         android:textAlignment="textStart"
         android:textColor="#FFFFFF"
         android:textStyle="bold" />
@@ -115,7 +115,7 @@
 
 
     <Button
-        android:id="@+id/btnimgUsuario"
+        android:id="@+id/btnimgUsuariochat"
         android:layout_width="88dp"
         android:layout_height="85dp"
         android:layout_below="@+id/btnimgVerProd"
@@ -130,7 +130,7 @@
         android:id="@+id/imgUsuarioNuevo"
         android:layout_width="88dp"
         android:layout_height="85dp"
-        android:layout_below="@+id/btnimgUsuario"
+        android:layout_below="@+id/btnimgUsuariochat"
         android:layout_alignParentStart="true"
         android:layout_marginStart="65dp"
         android:layout_marginTop="50dp"
