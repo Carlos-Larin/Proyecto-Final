@@ -43,10 +43,12 @@ dependencies {
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
 
     // Dependencias de Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
     implementation ("com.google.firebase:firebase-messaging")
     implementation ("com.google.firebase:firebase-storage")
     implementation ("com.google.firebase:firebase-database")
     implementation ("com.firebaseui:firebase-ui-storage:8.0.2")
+    implementation("com.google.firebase:firebase-appcheck")
+    implementation  ("com.google.firebase:firebase-appcheck-safetynet:16.0.0")// Agrega esta línea para App Check
     implementation ("com.google.firebase:firebase-appcheck-playintegrity:16.1.1") // Agrega esta línea para App Check
 }

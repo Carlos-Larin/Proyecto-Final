@@ -35,12 +35,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+
 public class MainActivity extends AppCompatActivity {
     Button btn;
     FloatingActionButton fab;
     TextView tempVal;
     String accion = "nuevo";
-    String idProducto="";
+    String id="", rev="", idProducto="";
     String urlCompletaFoto;
     String getUrlCompletaFotoFirestore;
     Intent tomarFotoIntent;
@@ -49,14 +50,13 @@ public class MainActivity extends AppCompatActivity {
     detectarInternet di;
     String miToken = "";
     DatabaseReference databaseReference;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FirebaseApp.initializeApp(this);
 
         // Inicializar Firebase App Check
+        FirebaseApp.initializeApp(this);
         FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
         firebaseAppCheck.installAppCheckProviderFactory(
                 PlayIntegrityAppCheckProviderFactory.getInstance());
@@ -81,13 +81,12 @@ public class MainActivity extends AppCompatActivity {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tomarFotoProducto();
+                tomarFotoAmigo();
             }
         });
         obtenerToken();
-        mostrarDatosProductos();
+        mostrarDatosAmigos();
     }
-
     private void subirFotoFirestore(){
         mostrarMsg("Subiendo Foto...");
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -99,30 +98,27 @@ public class MainActivity extends AppCompatActivity {
             mostrarMsg("Error al subir la foto: "+ e.getMessage());
         });
         tareaSubir.addOnSuccessListener(tareaInstantanea->{
-            mostrarMsg("Foto subida con éxito.");
+            mostrarMsg("Foto subida con exito.");
             Task<Uri> descargarUri = tareaSubir.continueWithTask(tarea->reference.getDownloadUrl()).addOnCompleteListener(tarea->{
                 if( tarea.isSuccessful() ){
                     getUrlCompletaFotoFirestore = tarea.getResult().toString();
-                    guardarProducto();
+                    guardarAmigo();
                 }else{
                     mostrarMsg("Error al descargar la ruta de la imagen");
                 }
             });
         });
     }
-
     private void obtenerToken(){
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if( !task.isSuccessful() ){
-                mostrarMsg("Error al obtener el token");
                 return;
             }
             miToken = task.getResult();
         });
     }
-
-    private void guardarProducto(){
-        try{
+    private void guardarAmigo(){
+        try {
             tempVal = findViewById(R.id.txtMarca);
             String marca = tempVal.getText().toString();
 
@@ -136,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             String stock = tempVal.getText().toString();
 
             tempVal = findViewById(R.id.txtPrecio);
-            String precio = tempVal.getText().toString();
+            String precio= tempVal.getText().toString();
 
             tempVal = findViewById(R.id.txtcosto);
             String costo = tempVal.getText().toString();
@@ -144,78 +140,78 @@ public class MainActivity extends AppCompatActivity {
             databaseReference = FirebaseDatabase.getInstance().getReference("productos");
             String key = databaseReference.push().getKey();
 
-            if(miToken.isEmpty()){
+            if(miToken.equals("") || miToken==null){
                 obtenerToken();
             }
-            if( miToken != null && !miToken.isEmpty() ){
-                productos producto = new productos(idProducto, marca, descripcion, presentacion, stock, precio, costo, urlCompletaFoto,getUrlCompletaFotoFirestore,miToken);
-                if (key != null){
-                    databaseReference.child(key).setValue(producto).addOnSuccessListener(aVoid ->{
-                        mostrarMsg("Producto registrado con éxito.");
-                    }).addOnFailureListener(e->{
-                        mostrarMsg("Error al guardar en la base de datos: " + e.getMessage());
+            if( miToken!=null && miToken!="" ){
+                productos producto = new productos(idProducto,marca,descripcion,presentacion,stock,precio,costo,urlCompletaFoto,getUrlCompletaFotoFirestore,miToken);
+                if(key!=null){
+                    databaseReference.child(key).setValue(producto).addOnSuccessListener(aVoid->{
+                        mostrarMsg("producto registrado con exito.");
+                        abrirActividad();
                     });
                 }else{
-                    mostrarMsg("Error: No se pudo generar una clave en la base de datos");
+                    mostrarMsg("Error nose pudo guardar en la base de datos");
                 }
             }else {
-                mostrarMsg("Error: El dispositivo no soporta la aplicación");
+                mostrarMsg("Tu dispositivo no soporta la aplicacion");
             }
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Error: "+ e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-
-    private void tomarFotoProducto(){
+    private void tomarFotoAmigo(){
         tomarFotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File fotoProducto = null;
         try{
-            fotoProducto = crearImagenProducto();
-            Uri uriFotoProducto = FileProvider.getUriForFile(MainActivity.this,
-                    "com.ugb.controlesbasicos.fileprovider", fotoProducto);
-            tomarFotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriFotoProducto);
-            startActivityForResult(tomarFotoIntent, 1);
-        } catch (Exception e){
-            mostrarMsg("Error al abrir la cámara: "+ e.getMessage());
+            fotoProducto= crearImagenAmigo();
+            if( fotoProducto!=null ){
+                Uri uriFotoamigo = FileProvider.getUriForFile(MainActivity.this,
+                        "com.ugb.controlesbasicos.fileprovider", fotoProducto);
+                tomarFotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriFotoamigo);
+                startActivityForResult(tomarFotoIntent, 1);
+            }else{
+                mostrarMsg("No se pudo creaar la foto");
+            }
+        }catch (Exception e){
+            mostrarMsg("Error al abrir la camara: "+ e.getMessage());
         }
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try{
-            if(requestCode == 1 && resultCode == RESULT_OK){
+            if(requestCode==1 && resultCode==RESULT_OK){
                 Bitmap imageBitmap = BitmapFactory.decodeFile(urlCompletaFoto);
                 img.setImageBitmap(imageBitmap);
             }else{
-                mostrarMsg("El usuario canceló la toma de la foto");
+                mostrarMsg("El usuario cancelo la toma de la foto");
             }
         }catch (Exception e){
-            mostrarMsg("Error al obtener la foto de la cámara");
+            mostrarMsg("Error añ obtener la foto de la camara");
         }
     }
-
-    private File crearImagenProducto() throws Exception{
+    private File crearImagenAmigo() throws Exception{
         String fechaHoraMs = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()),
                 fileName = "imagen_"+ fechaHoraMs +"_";
         File dirAlmacenamiento = getExternalFilesDir(Environment.DIRECTORY_DCIM);
-        if( dirAlmacenamiento.exists() == false ){
+        if( dirAlmacenamiento.exists()==false ){
             dirAlmacenamiento.mkdirs();
         }
         File imagen = File.createTempFile(fileName, ".jpg", dirAlmacenamiento);
         urlCompletaFoto = imagen.getAbsolutePath();
         return imagen;
     }
-
-    private void mostrarDatosProductos(){
+    private void mostrarDatosAmigos(){
         try{
-            Bundle parametros = getIntent().getExtras();// Recibir los parámetros...
+            Bundle parametros = getIntent().getExtras();//Recibir los parametros...
             accion = parametros.getString("accion");
 
-            assert accion != null;
             if(accion.equals("modificar")){
-                JSONObject jsonObject = new JSONObject(Objects.requireNonNull(parametros.getString("productos"))).getJSONObject("value");
-                idProducto = jsonObject.getString("idProducto");
+                JSONObject jsonObject = new JSONObject(parametros.getString("productos")).getJSONObject("value");
+                id = jsonObject.getString("_id");
+                rev = jsonObject.getString("_rev");
+                idProducto = jsonObject.getString("idproducto");
 
                 tempVal = findViewById(R.id.txtMarca);
                 tempVal.setText(jsonObject.getString("marca"));
@@ -232,21 +228,22 @@ public class MainActivity extends AppCompatActivity {
                 tempVal = findViewById(R.id.txtPrecio);
                 tempVal.setText(jsonObject.getString("precio"));
 
+                tempVal = findViewById(R.id.txtcosto);
+                tempVal.setText(jsonObject.getString("costo"));
+
                 urlCompletaFoto = jsonObject.getString("urlCompletaFoto");
                 Bitmap imageBitmap = BitmapFactory.decodeFile(urlCompletaFoto);
                 img.setImageBitmap(imageBitmap);
-            }else{// nuevo registro
+            }else{//nuevo registro
                 idProducto = utls.generarIdUnico();
             }
         }catch (Exception e){
             mostrarMsg("Error al mostrar datos: "+ e.getMessage());
         }
     }
-
     private void mostrarMsg(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
-
     private void abrirActividad(){
         Intent abrirActividad = new Intent(getApplicationContext(), interfaz_principal.class);
         startActivity(abrirActividad);

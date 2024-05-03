@@ -35,13 +35,6 @@ public class productos {
         this.costo = costo;
     }
 
-    public String getIdProducto() {
-        return idProducto;
-    }
-
-    public void setIdProducto(String idProducto) {
-        this.idProducto = idProducto;
-    }
 
     public String getUrlFotoProductoFirestore() {
         return urlFotoProductoFirestore;
@@ -67,11 +60,11 @@ public class productos {
         this.urlFotoProducto = urlFotoProducto;
     }
 
-    public String getidProducto() {
+    public String getIdProducto() {
         return idProducto;
     }
 
-    public void setidProducto(String idProducto) {
+    public void setIdProducto(String idProducto) {
         this.idProducto = idProducto;
     }
 
