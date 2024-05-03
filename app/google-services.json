@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "166127550972",
+    "firebase_url": "https://practicafinalcarloslarin-default-rtdb.firebaseio.com",
+    "project_id": "practicafinalcarloslarin",
+    "storage_bucket": "practicafinalcarloslarin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166127550972:android:6819465575419e5d08b279",
+        "android_client_info": {
+          "package_name": "com.ugb.controlesbasicos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoWw6Q9oQdhxGrIhkeFxN8692kJXNVJYI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
