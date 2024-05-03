@@ -74,17 +74,14 @@ public class lista_productos extends AppCompatActivity {
                 jsonObject = new JSONObject();
 
                 do{
-                    if( cProductos.getString(0).length()>0 && cProductos.getString(1).length()>0 ){
-                        jsonObject.put("_id", cProductos.getString(0));
-                        jsonObject.put("_rev", cProductos.getString(1));
-                    }
-                    jsonObject.put("idProducto", cProductos.getString(2));
-                    jsonObject.put("marca", cProductos.getString(3));
-                    jsonObject.put("descripcion", cProductos.getString(4));
-                    jsonObject.put("presentacion", cProductos.getString(5));
-                    jsonObject.put("stock", cProductos.getString(6));
-                    jsonObject.put("precio", cProductos.getString(7));
-                    jsonObject.put("urlCompletaFoto", cProductos.getString(8));
+
+                    jsonObject.put("idProducto", cProductos.getString(0));
+                    jsonObject.put("marca", cProductos.getString(1));
+                    jsonObject.put("descripcion", cProductos.getString(2));
+                    jsonObject.put("presentacion", cProductos.getString(3));
+                    jsonObject.put("stock", cProductos.getString(4));
+                    jsonObject.put("precio", cProductos.getString(5));
+                    jsonObject.put("urlCompletaFoto", cProductos.getString(6));
                     jsonObject.put("actualizado", "si");
 
                     enviarDatosServidor objGuardarDatosServidor = new enviarDatosServidor(getApplicationContext());
@@ -94,8 +91,6 @@ public class lista_productos extends AppCompatActivity {
                     if (respuestaJSONObject.getBoolean("ok")) {
                         DB db = new DB(getApplicationContext(), "",null, 1);
                         String[] datos = new String[]{
-                                respuestaJSONObject.getString("id"),
-                                respuestaJSONObject.getString("rev"),
                                 jsonObject.getString("idProducto"),
                                 jsonObject.getString("marca"),
                                 jsonObject.getString("descripcion"),
@@ -142,8 +137,6 @@ public class lista_productos extends AppCompatActivity {
                 for (int i=0; i<datosJSON.length(); i++){
                     misDatosJSONObject = datosJSON.getJSONObject(i).getJSONObject("value");
                     datosProductos = new productos(
-                            misDatosJSONObject.getString("_id"),
-                            misDatosJSONObject.getString("_rev"),
                             misDatosJSONObject.getString("idProducto"),
                             misDatosJSONObject.getString("marca"),
                             misDatosJSONObject.getString("descripcion"),
@@ -151,7 +144,9 @@ public class lista_productos extends AppCompatActivity {
                             misDatosJSONObject.getString("stock"),
                             misDatosJSONObject.getString("precio"),
                             misDatosJSONObject.getString("costo"),
-                            misDatosJSONObject.getString("urlCompletaFoto")
+                            misDatosJSONObject.getString("urlCompletaFoto"),
+                            misDatosJSONObject.getString("urlFotoProductoFirestore"),
+                            misDatosJSONObject.getString("token")
                             );
                     alProductos.add(datosProductos);
                 }
@@ -204,7 +199,7 @@ public class lista_productos extends AppCompatActivity {
     private void eliminarProducto(){
         try {
             AlertDialog.Builder confirmar = new AlertDialog.Builder(lista_productos.this);
-            confirmar.setTitle("Esta seguro de eliinar a: ");
+            confirmar.setTitle("Esta seguro de eliminar a: ");
             confirmar.setMessage(datosJSON.getJSONObject(posicion).getJSONObject("value").getString("marca"));
             confirmar.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                 @Override

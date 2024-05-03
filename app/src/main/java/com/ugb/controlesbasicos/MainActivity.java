@@ -1,5 +1,4 @@
 package com.ugb.controlesbasicos;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -19,6 +18,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -31,14 +33,14 @@ import org.json.JSONObject;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     Button btn;
     FloatingActionButton fab;
     TextView tempVal;
     String accion = "nuevo";
-    String id="", rev="", idProducto="";
+    String idProducto="";
     String urlCompletaFoto;
     String getUrlCompletaFotoFirestore;
     Intent tomarFotoIntent;
@@ -47,10 +49,18 @@ public class MainActivity extends AppCompatActivity {
     detectarInternet di;
     String miToken = "";
     DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseApp.initializeApp(this);
+
+        // Inicializar Firebase App Check
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(
+                PlayIntegrityAppCheckProviderFactory.getInstance());
+
         di = new detectarInternet(getApplicationContext());
         utls = new utilidades();
         fab = findViewById(R.id.fabListarProductos);
@@ -89,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             mostrarMsg("Error al subir la foto: "+ e.getMessage());
         });
         tareaSubir.addOnSuccessListener(tareaInstantanea->{
-            mostrarMsg("Foto subida con exito.");
+            mostrarMsg("Foto subida con éxito.");
             Task<Uri> descargarUri = tareaSubir.continueWithTask(tarea->reference.getDownloadUrl()).addOnCompleteListener(tarea->{
                 if( tarea.isSuccessful() ){
                     getUrlCompletaFotoFirestore = tarea.getResult().toString();
@@ -100,10 +110,11 @@ public class MainActivity extends AppCompatActivity {
             });
         });
     }
-    //revisa esta clase
+
     private void obtenerToken(){
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if( !task.isSuccessful() ){
+                mostrarMsg("Error al obtener el token");
                 return;
             }
             miToken = task.getResult();
@@ -136,23 +147,24 @@ public class MainActivity extends AppCompatActivity {
             if(miToken.isEmpty()){
                 obtenerToken();
             }
-            if( miToken!=null && miToken!="" ){
-                productos producto = new productos(idProducto,marca,descripcion,presentacion,stock,precio,costo, urlCompletaFoto, getUrlCompletaFotoFirestore, miToken);
-                if (key!=null){
+            if( miToken != null && !miToken.isEmpty() ){
+                productos producto = new productos(idProducto, marca, descripcion, presentacion, stock, precio, costo, urlCompletaFoto,getUrlCompletaFotoFirestore,miToken);
+                if (key != null){
                     databaseReference.child(key).setValue(producto).addOnSuccessListener(aVoid ->{
-                        mostrarMsg("Producto registrado con exito.");
+                        mostrarMsg("Producto registrado con éxito.");
+                    }).addOnFailureListener(e->{
+                        mostrarMsg("Error al guardar en la base de datos: " + e.getMessage());
                     });
                 }else{
-                    mostrarMsg("Error no se pudo guardar en la base de datos");
+                    mostrarMsg("Error: No se pudo generar una clave en la base de datos");
                 }
             }else {
-                mostrarMsg("Tu dispositivo no soporta la aplicación");
+                mostrarMsg("Error: El dispositivo no soporta la aplicación");
             }
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Error: "+ e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-
 
     private void tomarFotoProducto(){
         tomarFotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -164,43 +176,45 @@ public class MainActivity extends AppCompatActivity {
             tomarFotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriFotoProducto);
             startActivityForResult(tomarFotoIntent, 1);
         } catch (Exception e){
-            mostrarMsg("Error al abrir la camara: "+ e.getMessage());
+            mostrarMsg("Error al abrir la cámara: "+ e.getMessage());
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try{
-            if(requestCode==1 && resultCode==RESULT_OK){
+            if(requestCode == 1 && resultCode == RESULT_OK){
                 Bitmap imageBitmap = BitmapFactory.decodeFile(urlCompletaFoto);
                 img.setImageBitmap(imageBitmap);
             }else{
-                mostrarMsg("El usuario cancelo la toma de la foto");
+                mostrarMsg("El usuario canceló la toma de la foto");
             }
         }catch (Exception e){
-            mostrarMsg("Error al obtener la foto de la camara");
+            mostrarMsg("Error al obtener la foto de la cámara");
         }
     }
+
     private File crearImagenProducto() throws Exception{
         String fechaHoraMs = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()),
                 fileName = "imagen_"+ fechaHoraMs +"_";
         File dirAlmacenamiento = getExternalFilesDir(Environment.DIRECTORY_DCIM);
-        if( dirAlmacenamiento.exists()==false ){
+        if( dirAlmacenamiento.exists() == false ){
             dirAlmacenamiento.mkdirs();
         }
         File imagen = File.createTempFile(fileName, ".jpg", dirAlmacenamiento);
         urlCompletaFoto = imagen.getAbsolutePath();
         return imagen;
     }
+
     private void mostrarDatosProductos(){
         try{
-            Bundle parametros = getIntent().getExtras();//Recibir los parametros...
+            Bundle parametros = getIntent().getExtras();// Recibir los parámetros...
             accion = parametros.getString("accion");
 
+            assert accion != null;
             if(accion.equals("modificar")){
-                JSONObject jsonObject = new JSONObject(parametros.getString("productos")).getJSONObject("value");
-                id = jsonObject.getString("_id");
-                rev = jsonObject.getString("_rev");
+                JSONObject jsonObject = new JSONObject(Objects.requireNonNull(parametros.getString("productos"))).getJSONObject("value");
                 idProducto = jsonObject.getString("idProducto");
 
                 tempVal = findViewById(R.id.txtMarca);
@@ -221,16 +235,18 @@ public class MainActivity extends AppCompatActivity {
                 urlCompletaFoto = jsonObject.getString("urlCompletaFoto");
                 Bitmap imageBitmap = BitmapFactory.decodeFile(urlCompletaFoto);
                 img.setImageBitmap(imageBitmap);
-            }else{//nuevo registro
+            }else{// nuevo registro
                 idProducto = utls.generarIdUnico();
             }
         }catch (Exception e){
             mostrarMsg("Error al mostrar datos: "+ e.getMessage());
         }
     }
+
     private void mostrarMsg(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
+
     private void abrirActividad(){
         Intent abrirActividad = new Intent(getApplicationContext(), interfaz_principal.class);
         startActivity(abrirActividad);

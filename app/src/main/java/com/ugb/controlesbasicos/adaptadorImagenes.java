@@ -1,5 +1,6 @@
 package com.ugb.controlesbasicos;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,7 +38,7 @@ public class adaptadorImagenes extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View itemView = layoutInflater.inflate(R.layout.listview_imagenes, viewGroup, false);
+        @SuppressLint("ViewHolder") View itemView = layoutInflater.inflate(R.layout.listview_imagenes, viewGroup, false);
         try{
             datosProductos = datosProductosArrayList.get(i);
 
