@@ -13,7 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-public class Usuarios extends AppCompatActivity {
+public class usuarios extends AppCompatActivity {
     Button btn;
     TextView tempVal;
     DatabaseReference mDatabase;

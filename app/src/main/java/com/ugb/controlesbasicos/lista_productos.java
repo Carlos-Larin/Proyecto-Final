@@ -148,6 +148,7 @@ public class lista_productos extends AppCompatActivity {
                             misDatosJSONObject.getString("presentacion"),
                             misDatosJSONObject.getString("stock"),
                             misDatosJSONObject.getString("precio"),
+                            misDatosJSONObject.getString("costo"),
                             misDatosJSONObject.getString("urlCompletaFoto")
                             );
                     alProductos.add(datosProductos);

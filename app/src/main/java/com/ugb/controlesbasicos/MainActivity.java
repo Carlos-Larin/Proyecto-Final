@@ -3,6 +3,7 @@ package com.ugb.controlesbasicos;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,8 +14,11 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
@@ -23,10 +27,13 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import org.json.JSONObject;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -132,21 +139,22 @@ public class MainActivity extends AppCompatActivity {
                 obtenerToken();
             }
             if( miToken!=null && miToken!="" ){
-                productos productos = new productos(idProducto,marca,descripcion,presentacion,stock,precio,costo,urlCompletaFoto,getUrlCompletaFotoFirestore);
+                productos producto = new productos(idProducto,marca,descripcion,presentacion,stock,precio,costo, urlCompletaFoto, getUrlCompletaFotoFirestore, miToken);
                 if (key!=null){
-                    databaseReference.child(key).setValue(productos).addOnSuccessListener(aVoid ->{
+                    databaseReference.child(key).setValue(producto).addOnSuccessListener(aVoid ->{
                         mostrarMsg("Producto registrado con exito.");
                     });
                 }else{
-                    mostrarMsg("Error nose pudo guardar en la base de datos");
+                    mostrarMsg("Error no se pudo guardar en la base de datos");
                 }
             }else {
-                mostrarMsg("Tu dispositivo no soporta la aplicacion");
+                mostrarMsg("Tu dispositivo no soporta la aplicación");
             }
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Error: "+ e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
 
     private void tomarFotoProducto(){
         tomarFotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -226,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
     private void abrirActividad(){
-        Intent abrirActividad = new Intent(getApplicationContext(), lista_productos.class);
+        Intent abrirActividad = new Intent(getApplicationContext(), lista_usuarios.class);
         startActivity(abrirActividad);
     }
 }

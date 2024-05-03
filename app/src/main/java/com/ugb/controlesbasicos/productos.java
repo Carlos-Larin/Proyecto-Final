@@ -8,37 +8,57 @@ public class productos {
     String presentacion;
     String stock;
     String precio;
+    String costo;
     String urlFotoProducto;
     String urlFotoProductoFirestore;
-    String Token;
+    String token;
 
-    public productos(String idProducto, String marca, String descripcion, String presentacion, String stock, String  precio, String urlFoto, String urlFotoProductoFirestore, String Token) {
+    public productos(String idProducto, String marca, String descripcion, String presentacion, String stock, String  precio, String costo, String urlFoto, String urlFotoProductoFirestore, String token) {
         this.idProducto = idProducto;
         this.marca = marca;
         this.descripcion = descripcion;
         this.presentacion =presentacion;
         this.stock = stock;
         this.precio = precio;
+        this.costo = costo;
         this.urlFotoProducto = urlFoto;
         this.urlFotoProductoFirestore=urlFotoProductoFirestore;
-        this.Token=Token;
+        this.token=token;
 
+    }
+
+    public String getCosto() {
+        return costo;
+    }
+
+    public void setCosto(String costo) {
+        this.costo = costo;
+    }
+
+    public String getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(String idProducto) {
+        this.idProducto = idProducto;
     }
 
     public String getUrlFotoProductoFirestore() {
         return urlFotoProductoFirestore;
     }
 
-    public void setUrlFotoProductoFirestore(String urlFotoProductoFirestore){
-        this.urlFotoProductoFirestore=urlFotoProductoFirestore;
+    public void setUrlFotoProductoFirestore(String urlFotoProductoFirestore) {
+        this.urlFotoProductoFirestore = urlFotoProductoFirestore;
     }
 
     public String getToken() {
-        return Token;
+        return token;
     }
+
     public void setToken(String token) {
-        this.Token = token;
+        this.token = token;
     }
+
     public String getUrlFotoProducto() {
         return urlFotoProducto;
     }
