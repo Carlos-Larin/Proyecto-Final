@@ -29,15 +29,23 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/fondoblack"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/fondoblack"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoFinal"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".interfaz_principal"
             android:exported="false" />
+        <activity android:name=".MainActivity"
+            android:exported="false"/>
+        <activity android:name=".lista_productos"
+            android:exported="false"/>
+        <activity android:name=".usuarios"
+            android:exported="false"/>
+        <activity android:name=".lista_usuarios"
+            android:exported="false"/>
         <activity
             android:name=".login"
             android:exported="true">
@@ -49,7 +57,7 @@
         </activity>
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@mipmap/ic_launcher" />
+            android:resource="@drawable/fondoblack" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/design_default_color_primary" />

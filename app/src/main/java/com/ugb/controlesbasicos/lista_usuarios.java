@@ -17,7 +17,7 @@ public class lista_usuarios extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_usuarios);
-        fab = findViewById(R.id.fabAgregarUsuarios);
+        fab = findViewById(R.id.fabinterfaz);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -27,7 +27,7 @@ public class lista_usuarios extends AppCompatActivity {
     }
 
     private void abrirActividad(){
-       Intent abrirActividad = new Intent(getApplicationContext(), MainActivity.class);
+       Intent abrirActividad = new Intent(getApplicationContext(), interfaz_principal.class);
         startActivity(abrirActividad);
     }
 }

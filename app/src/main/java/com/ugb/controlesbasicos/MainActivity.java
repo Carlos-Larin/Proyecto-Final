@@ -35,7 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-
 public class MainActivity extends AppCompatActivity {
     Button btn;
     FloatingActionButton fab;
@@ -235,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
     private void abrirActividad(){
-        Intent abrirActividad = new Intent(getApplicationContext(), lista_usuarios.class);
+        Intent abrirActividad = new Intent(getApplicationContext(), interfaz_principal.class);
         startActivity(abrirActividad);
     }
 }

@@ -1,5 +1,6 @@
 package com.ugb.controlesbasicos;
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -41,12 +42,13 @@ public class lista_productos extends AppCompatActivity {
     obtenerDatosServidor datosServidor;
     detectarInternet di;
     int posicion = 0;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lista_productos);
         db = new DB(getApplicationContext(),"", null, 1);
-        btn = findViewById(R.id.fabAgregarProductos);
+        btn = findViewById(R.id.fabinterfaz);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

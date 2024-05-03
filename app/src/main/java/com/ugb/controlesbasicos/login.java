@@ -17,12 +17,12 @@ public class login extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        // Initialize the views
+        // buscamos
         editUsuario = findViewById(R.id.editUsuario);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
 
-        // Set the button click listener
+        // cuando haga click
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,7 +38,7 @@ public class login extends Activity {
         // Check if the username is "joyas" and the password is "12345"
         if ("joyas".equals(username) && "12345".equals(password)) {
             // Correct credentials, start the MainActivity
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, interfaz_principal.class);
             startActivity(intent);
             finish(); // Close the login activity
         } else {

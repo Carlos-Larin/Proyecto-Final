@@ -18,7 +18,7 @@
         android:layout_height="match_parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAgregarProductos"
+        android:id="@+id/fabinterfaz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -27,8 +27,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:backgroundTint="#6A0CE422"
-        android:src="@android:drawable/ic_input_add"
-        android:tint="#FFEB3B" />
+        android:backgroundTint="#E40C2D"
+        android:src="@android:drawable/ic_menu_revert" />
 
 </RelativeLayout>

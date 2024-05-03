@@ -42,7 +42,13 @@ public class usuarios extends AppCompatActivity {
             }
         });
 
-
+        fab = findViewById(R.id.fabinterfaz);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                abrirInterfaz();
+            }
+        });
 
     }
 
@@ -64,6 +70,10 @@ public class usuarios extends AppCompatActivity {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
     private void abrirActividad(){
+        Intent abrirActividad = new Intent(getApplicationContext(), lista_usuarios.class);
+        startActivity(abrirActividad);
+    }
+    private void abrirInterfaz(){
         Intent abrirActividad = new Intent(getApplicationContext(), lista_usuarios.class);
         startActivity(abrirActividad);
     }
