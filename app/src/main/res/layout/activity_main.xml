@@ -4,39 +4,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main"
+
+    android:background="@drawable/fondo"
     tools:context=".MainActivity">
 
-
-    <TextView
-        android:id="@+id/TIU"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="10dp"
-        android:text="Ingrese su usuario en el siguiente campo:"
-        android:textSize="20dp">
-    </TextView>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="198dp"
+        android:layout_height="87dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/logo"
+        app:srcCompat="@drawable/logo" />
 
     <EditText
-        android:id="@+id/txtIngreseUsuario"
+        android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:hint="Ingrese Usuario">
-    </EditText>
+        android:layout_below="@id/imageView"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:hint="Correo electrónico"
+        android:inputType="textEmailAddress" />
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="97dp"
-        android:layout_height="96dp"
-        android:layout_below="@+id/txtIngreseUsuario"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="157dp"
-        android:layout_marginTop="75dp"
-        android:layout_marginEnd="158dp"
-        android:backgroundTint="#4CAF50"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextEmail"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:hint="Contraseña"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextPassword"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="#2F130F0F"
+        android:text="Iniciar sesión" />
 
 </RelativeLayout>
