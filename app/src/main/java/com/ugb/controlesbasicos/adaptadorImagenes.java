@@ -1,6 +1,5 @@
 package com.ugb.controlesbasicos;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,46 +16,66 @@ import java.util.ArrayList;
 public class adaptadorImagenes extends BaseAdapter {
     Context context;
     ArrayList<productos> datosProductosArrayList;
-    productos datosProductos;
     LayoutInflater layoutInflater;
+
     public adaptadorImagenes(Context context, ArrayList<productos> datosProductosArrayList) {
         this.context = context;
         this.datosProductosArrayList = datosProductosArrayList;
+        this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
     @Override
     public int getCount() {
         return datosProductosArrayList.size();
     }
+
     @Override
     public Object getItem(int i) {
         return datosProductosArrayList.get(i);
     }
+
     @Override
     public long getItemId(int i) {
-        return i; //Long.parseLong(datosAmigosArrayList.get(i).getIdAmigo());
+        return i;
     }
+
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-         View itemView = layoutInflater.inflate(R.layout.listview_imagenes, viewGroup, false);
-        try{
-            datosProductos = datosProductosArrayList.get(i);
+    public View getView(int i, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder;
 
-            TextView tempVal = itemView.findViewById(R.id.lblNombreProducto);
-            tempVal.setText(datosProductos.getMarca());
-
-            tempVal = itemView.findViewById(R.id.lblPresentacion);
-            tempVal.setText(datosProductos.getPresentacion());
-
-            tempVal = itemView.findViewById(R.id.lblPrecioProducto);
-            tempVal.setText(datosProductos.getPrecio());
-
-            Bitmap imageBitmap = BitmapFactory.decodeFile(datosProductos.getUrlFotoProducto());
-            ImageView img = itemView.findViewById(R.id.imgFoto);
-            img.setImageBitmap(imageBitmap);
-        }catch (Exception e){
-            Toast.makeText(context, "Error al mostrar los datos: "+ e.getMessage(), Toast.LENGTH_LONG).show();
+        if (convertView == null) {
+            convertView = layoutInflater.inflate(R.layout.listview_imagenes, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.lblNombreProducto = convertView.findViewById(R.id.lblNombreProducto);
+            viewHolder.lblPresentacion = convertView.findViewById(R.id.lblPresentacion);
+            viewHolder.lblPrecioProducto = convertView.findViewById(R.id.lblPrecioProducto);
+            viewHolder.imgFoto = convertView.findViewById(R.id.imgFoto);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
-        return itemView;
+
+        try {
+            productos datosProductos = datosProductosArrayList.get(i);
+            viewHolder.lblNombreProducto.setText(datosProductos.getMarca() != null ? datosProductos.getMarca() : "No disponible");
+            viewHolder.lblPresentacion.setText(datosProductos.getPresentacion() != null ? datosProductos.getPresentacion() : "No disponible");
+            viewHolder.lblPrecioProducto.setText(datosProductos.getPrecio() != null ? datosProductos.getPrecio() : "No disponible");
+
+            if (datosProductos.getUrlFotoProducto() != null) {
+                Bitmap imageBitmap = BitmapFactory.decodeFile(datosProductos.getUrlFotoProducto());
+                viewHolder.imgFoto.setImageBitmap(imageBitmap);
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error al mostrar los datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        return convertView;
+    }
+
+    private static class ViewHolder {
+        TextView lblNombreProducto;
+        TextView lblPresentacion;
+        TextView lblPrecioProducto;
+        ImageView imgFoto;
     }
 }

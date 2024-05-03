@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class interfaz_principal extends Activity {
 
-    Button btnimgProdN, btnimgUsuario, btnimgVerProd,imgUsuarioNuevo;
+    Button btnimgProdN, btnimgUsuariochat, btnimgVerProd,imgUsuarioNuevo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,7 @@ public class interfaz_principal extends Activity {
 
         // Inicializar los botones
         btnimgProdN = findViewById(R.id.btnimgProdN);
-        btnimgUsuario = findViewById(R.id.btnimgUsuario);
+        btnimgUsuariochat = findViewById(R.id.btnimgUsuariochat);
         btnimgVerProd = findViewById(R.id.btnimgVerProd);
         imgUsuarioNuevo = findViewById(R.id.imgUsuarioNuevo);
 
@@ -38,7 +38,7 @@ public class interfaz_principal extends Activity {
                 btnverproducto();
             }
         });
-        btnimgUsuario.setOnClickListener(new View.OnClickListener() {
+        btnimgUsuariochat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -59,5 +59,10 @@ public class interfaz_principal extends Activity {
         finish(); // Cierra la actividad actual
     }
 
+    private void btnimgUsuariochat(){
+        Intent intent = new Intent(this, lista_productos.class);
+        startActivity(intent);
+        finish(); // Cierra la actividad actual
+    }
 
 }

@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
                 mostrarMsg("El usuario cancelo la toma de la foto");
             }
         }catch (Exception e){
-            mostrarMsg("Error añ obtener la foto de la camara");
+            mostrarMsg("Error al obtener la foto de la camara");
         }
     }
     private File crearImagenAmigo() throws Exception{

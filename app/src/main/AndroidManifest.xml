@@ -41,6 +41,12 @@
             android:exported="false"/>
         <activity android:name=".lista_productos"
             android:exported="false"/>
+        <activity android:name=".chat"
+            android:exported="false">
+        </activity>
+        <activity android:name=".mensajeria"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".login"
             android:exported="true">

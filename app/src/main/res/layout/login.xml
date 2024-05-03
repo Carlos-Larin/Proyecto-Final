@@ -33,6 +33,7 @@
         android:elevation="5dp"
         android:hint="Usuario"
         android:inputType="text"
+        android:textColor="@color/black"
         android:padding="10dp" />
 
     <EditText
@@ -43,8 +44,8 @@
         android:layout_margin="10dp"
         android:layout_marginTop="46dp"
         android:background="@color/white"
+        android:textColor="@color/black"
         android:elevation="5dp"
-        android:enabled="false"
         android:hint="Contraseña"
         android:inputType="textPassword"
         android:padding="10dp" />
