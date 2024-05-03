@@ -36,10 +36,12 @@
         android:layout_below="@+id/btnImgProducto"
         android:layout_marginTop="20dp"
         android:foregroundTint="#CC3E3E"
+        android:textColorHint="@color/black"
         android:hint="Marca"
         android:inputType="text"
         android:shadowColor="#C13939"
-        android:textColor="@color/black">
+        android:textColor="@color/black"
+        >
     </EditText>
 
     <EditText
@@ -49,6 +51,7 @@
         android:layout_below="@+id/txtMarca"
         android:layout_marginTop="20dp"
         android:hint="Descripción"
+        android:textColorHint="@color/black"
         android:inputType="textMultiLine"
         android:textColor="@color/black">
     </EditText>
@@ -61,6 +64,7 @@
         android:layout_marginTop="20dp"
         android:hint="Presentación"
         android:inputType="text"
+        android:textColorHint="@color/black"
         android:textColor="@color/black">
     </EditText>
 
@@ -71,6 +75,7 @@
         android:layout_below="@+id/txtPresentacion"
         android:layout_marginTop="20dp"
         android:hint="stock"
+        android:textColorHint="@color/black"
         android:inputType="number"
         android:textColor="@color/black">
     </EditText>
@@ -82,6 +87,7 @@
         android:layout_below="@+id/txtstock"
         android:layout_marginTop="20dp"
         android:hint="Precio al publico"
+        android:textColorHint="@color/black"
         android:inputType="numberDecimal"
         android:textColor="@color/black">
     </EditText>
@@ -93,6 +99,7 @@
         android:layout_below="@+id/txtPrecio"
         android:inputType="numberDecimal"
         android:hint="Costo del proveedor"
+        android:textColorHint="@color/black"
         android:layout_marginTop="20dp">
     </EditText>
 
